@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.pt
+*.h5
+
+# Environment files
+.env
+.venv/
+venv/
+env/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Logs and outputs
+*.log
+logs/
+wandb/
+
+# Model weights and checkpoints
+models/*.pt
+models/*.pth
+models/*.h5
+
+# Data (avoid pushing large datasets)
+data/raw/
+data/processed/
+!data/.gitkeep
+
+# Cache / Temp files
+*.cache
+*.tmp
+.DS_Store
+
+# Streamlit static data
+app/static/
+
+# Byte-compiled / distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual environment metadata
+pip-wheel-metadata/
