@@ -11,6 +11,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from sklearn.metrics import accuracy_score, f1_score
+from torch.utils.tensorboard import SummaryWriter
 
 from .dataset import get_data_loaders
 from .model_baseline import EmotionCNN
@@ -227,6 +228,11 @@ def main():
     log_path = logs_dir / f"training_log_{args.model}.csv"
     init_csv_logger(log_path)
 
+
+    # TensorBoard Writer (NEW)
+    tb_log_dir = logs_dir / f"tensorboard_{args.model}"
+    writer = SummaryWriter(log_dir=str(tb_log_dir))
+
     best_val_f1 = 0.0
     best_model_path = models_dir / f"{args.model}_best.pt"
 
@@ -245,8 +251,15 @@ def main():
             f"Val Macro F1: {val_f1:.4f}"
         )
 
-        # Log to CSV
+      
+        # Log to CSV + TensorBoard
         append_metrics(log_path, epoch, train_loss, val_loss, val_acc, val_f1)
+
+        writer.add_scalar("Loss/Train", train_loss, epoch)
+        writer.add_scalar("Loss/Validation", val_loss, epoch)
+        writer.add_scalar("Accuracy/Validation", val_acc, epoch)
+        writer.add_scalar("F1/Validation", val_f1, epoch)
+
 
         # Save best model based on macro F1
         if val_f1 > best_val_f1:
@@ -263,6 +276,8 @@ def main():
                 best_model_path,
             )
             print(f"🔥 New best model saved to: {best_model_path}")
+    
+    writer.close()
 
     print("\nTraining complete.")
     print(f"Best Val Macro F1: {best_val_f1:.4f}")

@@ -1,4 +1,6 @@
 # src/cv/model_baseline.py
+# Input: 1 × 48 × 48  (grayscale face image)
+# Output: 7 logits (scores → softmax)
 
 import torch
 import torch.nn as nn
@@ -56,8 +58,8 @@ class EmotionCNN(nn.Module):
 
 
 if __name__ == "__main__":
-    # Quick sanity check on CPU
+    
     model = EmotionCNN(num_classes=7)
-    dummy = torch.randn(4, 1, 48, 48)  # batch of 4 grayscale images
+    dummy = torch.randn(4, 1, 48, 48)  
     out = model(dummy)
     print("Output shape:", out.shape)  # expect (4, 7)
